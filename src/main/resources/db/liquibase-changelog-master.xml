@@ -1,0 +1,20 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+         
+    <property name="indexTablespace" value="radzol_indx01" dbms="mariadb,mysql"/>
+    <property name="dataTablespace" value="radzol_data01" dbms="mariadb,mysql" />
+      
+    <property name="now" value="now()" dbms="mysql,mariadb,postgresql"/>
+	<property name="now" value="getdate()" dbms="mssql"/>
+	
+	<property name="uuid_type" value="BINARY(16)" dbms="mysql,mariadb"/>
+	<property name="uuid_type" value="uniqueidentifier" dbms="mssql"/>
+	
+	<property name="systemUser" value="system"/>
+         
+	<include file="1.0/db-changelog-1.0.xml" relativeToChangelogFile="true"/>
+         
+</databaseChangeLog>
