@@ -5,11 +5,11 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
          
 	<changeSet id="10" author="pradeepan">
-		<createTable tableName="role_permission" tablespace="${dataTablespace}">
+		<createTable tableName="role" tablespace="${dataTablespace}">
 			<column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyTablespace="${indexTablespace}"/>
             </column>
-            <column name="version" type="int">
+            <column name="version" type="int" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
             <column name="created_by" type="varchar(50)" defaultValue="${systemUser}">
@@ -30,42 +30,30 @@
             <column name="company_id" type="bigint">
             	<constraints nullable="false"/>
             </column>
-            <column name="role_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="permission" type="varchar(40)" >
+            <column name="name" type="varchar(45)">
                 <constraints nullable="false"/>
             </column>
 		</createTable>
 	</changeSet>
 	
 	<changeSet id="20" author="pradeepan">
-		<createIndex indexName="uq_rolepermission_uuid" tableName="role_permission" unique="true" tablespace="${indexTablespace}">
+		<createIndex indexName="uq_role_uuid" tableName="role" unique="true" tablespace="${indexTablespace}">
 			<column name="uuid"/>
 		</createIndex>
 	</changeSet>
 	
 	<changeSet id="30" author="pradeepan">
-		<createIndex indexName="uq_rolepermission_role_permission" tableName="role_permission" unique="true" tablespace="${indexTablespace}">
-			<column name="role_id"/>
-			<column name="permission"/>
+		<createIndex indexName="uq_role_name" tableName="role" unique="true" tablespace="${indexTablespace}">
+			<column name="name"/>
+			<column name="company_id"/>
 		</createIndex>
 	</changeSet>
 	
 	<changeSet id="40" author="pradeepan">
-		<addForeignKeyConstraint constraintName="fk_rolepermission_company"
-			baseTableName="role_permission"
+		<addForeignKeyConstraint constraintName="fk_role_company"
+			baseTableName="role"
 			baseColumnNames="company_id"
 			referencedTableName="company"
-			referencedColumnNames="id"
-			onDelete="CASCADE"/>
-	</changeSet>
-	
-	<changeSet id="50" author="pradeepan">
-		<addForeignKeyConstraint constraintName="fk_rolepermission_role"
-			baseTableName="role_permission"
-			baseColumnNames="role_id"
-			referencedTableName="role"
 			referencedColumnNames="id"
 			onDelete="CASCADE"/>
 	</changeSet>

@@ -9,7 +9,7 @@
 			<column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyTablespace="${indexTablespace}"/>
             </column>
-            <column name="version" type="int">
+            <column name="version" type="int" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
             <column name="created_by" type="varchar(50)" defaultValue="${systemUser}">

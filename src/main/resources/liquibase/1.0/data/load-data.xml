@@ -1,0 +1,24 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+	<changeSet id="10" author="pradeepan">
+		<insert tableName="company">
+			<column name="id" valueNumeric="1" />
+			<column name="version" valueNumeric="0" />
+			<column name="name" value="system" />
+			<column name="tenant_alias" value="system" />
+			<column name="time_zone" value="America/New_York"/>
+			<column name="currency" value="USD" />
+			<column name="service_account" value="service" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<rollback>
+			DELETE FROM company WHERE id = 1;
+		</rollback>
+	</changeSet>
+	
+         
+</databaseChangeLog>

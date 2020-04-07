@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * @author pradeepan
@@ -20,10 +21,12 @@ public class Company extends AbstractEntity {
 	private String name;
 
 	@NotBlank
+	@Size(max = 100)
 	@Column(name = "time_zone")
 	private String timeZone;
 
 	@NotBlank
+	@Size(max = 3)
 	private String currency;
 
 	@NotBlank
