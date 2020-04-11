@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.mvcMatchers("/v1/authentication/**")
 				.permitAll()
 			.mvcMatchers("/v1/companies")
-				.hasAuthority(Permission.SYSTEM_COMPANY.name())
+				.hasAuthority(Permission.SERVICE_TENANT.name())
 			.anyRequest().authenticated()
 		.and()
 			.logout()

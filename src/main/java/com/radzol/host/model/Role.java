@@ -31,27 +31,25 @@ import com.radzol.host.security.Permission;
 @Cacheable(true)
 @NaturalIdCache
 public class Role extends AbstractMultitenantEntity {
-	
-	@NotBlank
-	@Size(max = 45)
-	private String name;
-	
-	@NotNull
-	@OneToMany(mappedBy = "role", cascade = { CascadeType.ALL}, orphanRemoval = true, fetch= FetchType.EAGER)
-	private Set<RolePermission> memberships = new HashSet<RolePermission>();
 
-	public String getName() {
-		return name;
-	}
+    @NotBlank
+    @Size(max = 45)
+    private String name;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @NotNull
+    @OneToMany(mappedBy = "role", cascade = { CascadeType.ALL }, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<RolePermission> memberships = new HashSet<RolePermission>();
 
-	public List<Permission> getMemberships() {
-		return memberships.stream().map(n -> n.getPermissions()).collect(Collectors.toList());
-	}
-	
-	
-    
+    public String getName() {
+	return name;
+    }
+
+    public void setName(String name) {
+	this.name = name;
+    }
+
+    public List<Permission> getMemberships() {
+	return memberships.stream().map(n -> n.getPermission()).collect(Collectors.toList());
+    }
+
 }

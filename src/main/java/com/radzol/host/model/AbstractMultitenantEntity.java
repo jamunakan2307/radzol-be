@@ -16,17 +16,17 @@ import javax.validation.constraints.NotNull;
 @MappedSuperclass
 public abstract class AbstractMultitenantEntity extends AbstractEntity {
 
-	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "company_id")
-	private Company company;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "company_id")
+    private Company company;
 
-	public Company getCompany() {
-		return company;
-	}
+    public Company getCompany() {
+	return company;
+    }
 
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+    public void setCompany(Company company) {
+	this.company = company;
+    }
 
 }

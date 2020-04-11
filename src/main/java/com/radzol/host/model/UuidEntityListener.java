@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class UuidEntityListener {
 
-	@PrePersist
-	public void setUuid(AbstractEntity target) {
-		if (target.getUuid() == null) {
-			// TODO: use another one from jackson
-			target.setUuid(UUID.randomUUID());
-		}
+    @PrePersist
+    public void setUuid(AbstractEntity target) {
+	if (target.getUuid() == null) {
+	    // TODO: use another one from jackson
+	    target.setUuid(UUID.randomUUID());
 	}
+    }
 
 }

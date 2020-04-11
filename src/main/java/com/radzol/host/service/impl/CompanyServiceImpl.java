@@ -18,16 +18,16 @@ import com.radzol.host.service.CompanyService;
  */
 @Service
 public class CompanyServiceImpl implements CompanyService {
-	
-	private final CompanyRepository companyRepository;
-	
-	public CompanyServiceImpl(CompanyRepository companyRepository) {
-		this.companyRepository = companyRepository;
-	}
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<Company> findAll() {
-		return companyRepository.findAll();
-	}
+    private final CompanyRepository companyRepository;
+
+    public CompanyServiceImpl(CompanyRepository companyRepository) {
+	this.companyRepository = companyRepository;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Company> findAll() {
+	return companyRepository.findAll();
+    }
 }

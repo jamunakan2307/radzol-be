@@ -10,12 +10,15 @@ import org.springframework.security.core.GrantedAuthority;
  *
  */
 public enum Permission implements GrantedAuthority {
-	SYSTEM_COMPANY, SYSTEM_PROJECT, SYSTEM_TASK, SYSTEM_USER, ADMIN_USER, ADMIN_PROJECT, ADMIN_TASK, USER_PROJECT,
-	USER_TASK;
+    SERVICE_SYSTEM, 
+    SERVICE_TENANT,
+    MANAGE_USER,
+    MANAGE_PROJECT,
+    MANAGE_TASK;
 
-	@Override
-	public String getAuthority() {
-		return name();
-	}
+    @Override
+    public String getAuthority() {
+	return name();
+    }
 
 }

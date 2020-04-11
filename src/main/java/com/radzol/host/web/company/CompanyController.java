@@ -21,16 +21,16 @@ import com.radzol.host.service.CompanyService;
 @RequestMapping("/v1/companies")
 public class CompanyController {
 
-	private final CompanyService companyService;
+    private final CompanyService companyService;
 
-	@Autowired
-	public CompanyController(CompanyService companyService) {
-		this.companyService = companyService;
-	}
+    @Autowired
+    public CompanyController(CompanyService companyService) {
+	this.companyService = companyService;
+    }
 
-	@GetMapping()
-	public List<Company> getAll() {
-		return companyService.findAll();
-	}
+    @GetMapping()
+    public List<Company> getAll() {
+	return companyService.findAll();
+    }
 
 }

@@ -13,24 +13,24 @@ import com.radzol.host.web.authentication.LoginDto;
  */
 public class WebUserAuthenticationToken extends AbstractAuthenticationToken {
 
-	private static final long serialVersionUID = 1L;
-	private final String principal; // email address
-	private final LoginDto credentials;
+    private static final long serialVersionUID = 1L;
+    private final String principal; // email address
+    private final LoginDto credentials;
 
-	public WebUserAuthenticationToken(String principal, LoginDto credentials) {
-		super(null);
-		this.principal = principal;
-		this.credentials = credentials;
-	}
+    public WebUserAuthenticationToken(String principal, LoginDto credentials) {
+	super(null);
+	this.principal = principal;
+	this.credentials = credentials;
+    }
 
-	@Override
-	public LoginDto getCredentials() {
-		return credentials;
-	}
+    @Override
+    public LoginDto getCredentials() {
+	return credentials;
+    }
 
-	@Override
-	public String getPrincipal() {
-		return principal;
-	}
+    @Override
+    public String getPrincipal() {
+	return principal;
+    }
 
 }

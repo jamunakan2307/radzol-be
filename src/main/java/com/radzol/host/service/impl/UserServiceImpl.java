@@ -15,16 +15,20 @@ import com.radzol.host.service.UserService;
  */
 @Service
 public class UserServiceImpl implements UserService {
-	
-	private final UserRepository userRepository;
-	
-	public UserServiceImpl(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
 
-	@Override
-	public User findByEmail(String email) {
-		return userRepository.findByEmail(email);
-	}
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+	this.userRepository = userRepository;
+    }
+    @Override
+    public User findByUsername(String username) {
+	return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+	return userRepository.findByEmail(email);
+    }
 
 }

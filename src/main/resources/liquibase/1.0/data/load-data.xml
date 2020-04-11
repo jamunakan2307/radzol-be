@@ -6,17 +6,135 @@
 
 	<changeSet id="10" author="pradeepan">
 		<insert tableName="company">
-			<column name="id" valueNumeric="1" />
-			<column name="version" valueNumeric="0" />
-			<column name="name" value="system" />
-			<column name="tenant_alias" value="system" />
+			<column name="name" value="System" />
+			<column name="tenant_alias" value="SYS000" />
 			<column name="time_zone" value="America/New_York"/>
 			<column name="currency" value="USD" />
-			<column name="service_account" value="service" />
 			<column name="uuid" valueComputed="${uuid_function}" />
 		</insert>
 		<rollback>
-			DELETE FROM company WHERE id = 1;
+			<delete tableName="company">
+				<where>
+					tenant_alias = 'SYS000'
+				</where>
+			</delete>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="20" author="pradeepan">
+		<insert tableName="user">
+			<column name="username" value="admin" />
+			<column name="email" value="sysadmin@radzol.com" />
+			<column name="password" value="$2y$10$YCVlYxoCAG8em3oUFth1M.R0bPKpaTUuUcLLxKTMQbUAyKH1KIBIy" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="verified" valueBoolean="true" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<rollback>
+			<delete tableName="user">
+				<where>
+					company_id = (SELECT id FROM company WHERE tenant_alias='SYS000')
+				</where>
+			</delete>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="30" author="pradeepan">
+		<insert tableName="role">
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="name" value="sysadmin"/>
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role">
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="name" value="admin"/>
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role">
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="name" value="user"/>
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<rollback>
+			<delete tableName="role">
+				<where>
+					company_id = (SELECT id FROM company WHERE tenant_alias='SYS000')
+				</where>
+			</delete>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="40" author="pradeepan">
+		<insert tableName="role_permission">
+			<column name="permission" value="SERVICE_SYSTEM" />
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='sysadmin' AND c.tenant_alias='SYS000')" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role_permission">
+			<column name="permission" value="SERVICE_TENANT" />
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='sysadmin' AND c.tenant_alias='SYS000')" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role_permission">
+			<column name="permission" value="MANAGE_USER" />
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='sysadmin' AND c.tenant_alias='SYS000')" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role_permission">
+			<column name="permission" value="MANAGE_USER" />
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='admin' AND c.tenant_alias='SYS000')" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role_permission">
+			<column name="permission" value="MANAGE_PROJECT" />
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='admin' AND c.tenant_alias='SYS000')" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role_permission">
+			<column name="permission" value="MANAGE_TASK" />
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='admin' AND c.tenant_alias='SYS000')" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role_permission">
+			<column name="permission" value="MANAGE_PROJECT" />
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='user' AND c.tenant_alias='SYS000')" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<insert tableName="role_permission">
+			<column name="permission" value="MANAGE_TASK" />
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='user' AND c.tenant_alias='SYS000')" />
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<rollback>
+			<delete tableName="role">
+				<where>
+					company_id = (SELECT id FROM company WHERE tenant_alias='SYS000')
+				</where>
+			</delete>
+		</rollback>
+	</changeSet>
+	
+	<changeSet id="50" author="pradeepan">
+		<insert tableName="user_role">
+			<column name="company_id" valueComputed="(SELECT id FROM company WHERE tenant_alias='SYS000')" />
+			<column name="user_id" valueComputed="(SELECT u.id FROM user u INNER JOIN company c ON c.id = u.company_id WHERE u.username='admin' AND c.tenant_alias='SYS000')"/>
+			<column name="role_id" valueComputed="(SELECT r.id FROM role r INNER JOIN company c ON c.id = r.company_id WHERE r.name='sysadmin' AND c.tenant_alias='SYS000')"/>
+			<column name="uuid" valueComputed="${uuid_function}" />
+		</insert>
+		<rollback>
+			<delete tableName="user_role">
+				<where>
+					company_id = (SELECT id FROM company WHERE tenant_alias='SYS000')
+				</where>
+			</delete>
 		</rollback>
 	</changeSet>
 	

@@ -15,30 +15,30 @@ import javax.validation.constraints.NotNull;
 @Table(name = "user_role")
 public class UserRole extends AbstractMultitenantEntity {
 
-	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id")
-	private User user;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "role_id")
-	private Role role;
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+	return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+	this.user = user;
+    }
 
-	public Role getRole() {
-		return role;
-	}
+    public Role getRole() {
+	return role;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public void setRole(Role role) {
+	this.role = role;
+    }
 
 }

@@ -16,17 +16,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
-	private final AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
 
-	@Autowired
-	public SpringSecurityAuditorAware(AuthenticationService authenticationService) {
-		this.authenticationService = authenticationService;
-	}
+    @Autowired
+    public SpringSecurityAuditorAware(AuthenticationService authenticationService) {
+	this.authenticationService = authenticationService;
+    }
 
-	@Override
-	public Optional<String> getCurrentAuditor() {
-		String username = authenticationService.getCurrentUsername();
-		return Optional.of((username != null ? username : "system"));
-	}
+    @Override
+    public Optional<String> getCurrentAuditor() {
+	String username = authenticationService.getCurrentUsername();
+	return Optional.of((username != null ? username : "system"));
+    }
 
 }

@@ -27,29 +27,29 @@ import com.radzol.host.security.Permission;
 @NaturalIdCache
 public class RolePermission extends AbstractMultitenantEntity {
 
-	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "role_id", updatable = false)
-	private Role role;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "role_id", updatable = false)
+    private Role role;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private Permission permissions;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Permission permission;
 
-	public Role getRole() {
-		return role;
-	}
+    public Role getRole() {
+	return role;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public void setRole(Role role) {
+	this.role = role;
+    }
 
-	public Permission getPermissions() {
-		return permissions;
-	}
+    public Permission getPermission() {
+	return permission;
+    }
 
-	public void setPermissions(Permission permissions) {
-		this.permissions = permissions;
-	}
+    public void setPermissions(Permission permission) {
+	this.permission = permission;
+    }
 
 }

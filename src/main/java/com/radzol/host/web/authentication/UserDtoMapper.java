@@ -16,12 +16,12 @@ import com.radzol.host.security.UserAuthentication;
  */
 @Mapper(componentModel = "spring")
 public interface UserDtoMapper {
-	
-	UserDtoMapper INSTANCE = Mappers.getMapper(UserDtoMapper.class);
 
-	@Mapping(target = "username", source="email")
-	@Mapping(target = "tenantAlias", expression = "java(entity.getCompany()!=null?entity.getCompany().getTenantAlias():null)")
-	UserDto toDto(User entity);
-	
-	UserDto toDto(UserAuthentication entity);
+    UserDtoMapper INSTANCE = Mappers.getMapper(UserDtoMapper.class);
+
+    @Mapping(target = "tenantAlias", expression = "java(entity.getCompany()!=null?entity.getCompany().getTenantAlias():null)")
+    UserDto toDto(User entity);
+
+    @Mapping(target = "username", expression="java(entity.getName())")
+    UserDto toDto(UserAuthentication entity);
 }

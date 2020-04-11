@@ -30,85 +30,85 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  *
  */
 @MappedSuperclass
-@EntityListeners({ AuditingEntityListener.class, UuidEntityListener.class})
+@EntityListeners({ AuditingEntityListener.class, UuidEntityListener.class })
 public abstract class AbstractEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Version
-	private int version;
-	
-	@CreatedBy
-	@NotNull
-	@Size(max = 50)
-	@Column(name = "created_by", updatable = false)
-	private String createdBy;
+    @Version
+    private int version;
 
-	@CreatedDate
-	@NotNull
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	@Column(name = "created_timestamp", updatable = false)
-	private LocalDateTime createdTimestamp;
-	
-	@LastModifiedBy
-	@NotNull
-	@Size(max = 50)
-	@Column(name = "modified_by")
-	private String modifiedBy;
+    @CreatedBy
+    @NotNull
+    @Size(max = 50)
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
 
-	@LastModifiedDate
-	@NotNull
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	@Column(name = "modified_timestamp")
-	private LocalDateTime modifiedTimestamp;
+    @CreatedDate
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "created_timestamp", updatable = false)
+    private LocalDateTime createdTimestamp;
 
-	@NotNull
-	@NaturalId
-	private UUID uuid;
+    @LastModifiedBy
+    @NotNull
+    @Size(max = 50)
+    @Column(name = "modified_by")
+    private String modifiedBy;
 
-	public Long getId() {
-		return id;
+    @LastModifiedDate
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "modified_timestamp")
+    private LocalDateTime modifiedTimestamp;
+
+    @NotNull
+    @NaturalId
+    private UUID uuid;
+
+    public Long getId() {
+	return id;
+    }
+
+    public void setId(Long id) {
+	this.id = id;
+    }
+
+    public int getVersion() {
+	return version;
+    }
+
+    public void setVersion(int version) {
+	this.version = version;
+    }
+
+    public LocalDateTime getCreatedTimestamp() {
+	return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(LocalDateTime createdTimestamp) {
+	this.createdTimestamp = createdTimestamp;
+    }
+
+    public LocalDateTime getModifiedTimestamp() {
+	return modifiedTimestamp;
+    }
+
+    public void setModifiedTimestamp(LocalDateTime modifiedTimestamp) {
+	this.modifiedTimestamp = modifiedTimestamp;
+    }
+
+    public UUID getUuid() {
+	return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+	if (this.uuid != null && !this.uuid.equals(uuid)) {
+	    throw new IllegalArgumentException("UUID is immutabled and cannot be updated");
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public int getVersion() {
-		return version;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
-	}
-
-	public LocalDateTime getCreatedTimestamp() {
-		return createdTimestamp;
-	}
-
-	public void setCreatedTimestamp(LocalDateTime createdTimestamp) {
-		this.createdTimestamp = createdTimestamp;
-	}
-
-	public LocalDateTime getModifiedTimestamp() {
-		return modifiedTimestamp;
-	}
-
-	public void setModifiedTimestamp(LocalDateTime modifiedTimestamp) {
-		this.modifiedTimestamp = modifiedTimestamp;
-	}
-
-	public UUID getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(UUID uuid) {
-		if (this.uuid != null && !this.uuid.equals(uuid)) {
-			throw new IllegalArgumentException("UUID is immutabled and cannot be updated");
-		}
-		this.uuid = uuid;
-	}
+	this.uuid = uuid;
+    }
 
 }

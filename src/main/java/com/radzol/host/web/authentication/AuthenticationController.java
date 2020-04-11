@@ -28,56 +28,59 @@ import com.radzol.host.security.WebUserAuthenticationToken;
 @RequestMapping("/v1/authentication")
 public class AuthenticationController {
 
-	private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    
+    private final UserDtoMapper userDtoMapper;
 
-	@Autowired
-	public AuthenticationController(AuthenticationManager authenticationManager) {
-		this.authenticationManager = authenticationManager;
+    @Autowired
+    public AuthenticationController(AuthenticationManager authenticationManager, UserDtoMapper userDtoMapper) {
+	this.authenticationManager = authenticationManager;
+	this.userDtoMapper = userDtoMapper;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public UserDto login(@RequestBody LoginDto loginRequest) {
+	WebUserAuthenticationToken auth = new WebUserAuthenticationToken(loginRequest.getUsername(), loginRequest);
+	UserAuthentication user = (UserAuthentication) authenticationManager.authenticate(auth);
+	SecurityContextHolder.getContext().setAuthentication(user);
+
+	// optional stuff
+	// repository.saveContext(SecurityContextHolder.getContext(), request,
+	// response);
+	// rememberMeServices.loginSuccess(request, response, auth);
+
+	return userDtoMapper.toDto(user);
+    }
+
+    @RequestMapping(value = "/clearSession", method = RequestMethod.PUT)
+    public boolean clearSession(HttpServletRequest request, HttpServletResponse response) {
+	// SecurityContextLogoutHandler does this
+	// invalidate the session
+	HttpSession session = request.getSession(false);
+	if (session != null) {
+	    session.invalidate();
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public UserDto login(@RequestBody LoginDto loginRequest) {
-		WebUserAuthenticationToken auth = new WebUserAuthenticationToken(loginRequest.getUsername(), loginRequest);
-		UserAuthentication user = (UserAuthentication) authenticationManager.authenticate(auth);
-		SecurityContextHolder.getContext().setAuthentication(user);
+	// clear authentication
+	SecurityContextHolder.getContext().setAuthentication(null);
+	SecurityContextHolder.clearContext();
 
-		// optional stuff
-		// repository.saveContext(SecurityContextHolder.getContext(), request,
-		// response);
-		// rememberMeServices.loginSuccess(request, response, auth);
+	// CookieClearingLogoutHandler does this
+	// clear the cookies
+	clearCookie(request, response, "JSESSIONID");
 
-		return UserDtoMapper.INSTANCE.toDto(user);
+	return true;
+    }
+
+    private void clearCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
+	Cookie cookie = new Cookie(cookieName, null);
+	String cookiePath = request.getContextPath();
+	if (!StringUtils.hasLength(cookiePath)) {
+	    cookiePath = "/";
 	}
-
-	@RequestMapping(value = "/clearSession", method = RequestMethod.PUT)
-	public boolean clearSession(HttpServletRequest request, HttpServletResponse response) {
-		// SecurityContextLogoutHandler does this
-		// invalidate the session
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			session.invalidate();
-		}
-
-		// clear authentication
-		SecurityContextHolder.getContext().setAuthentication(null);
-		SecurityContextHolder.clearContext();
-
-		// CookieClearingLogoutHandler does this
-		// clear the cookies
-		clearCookie(request, response, "JSESSIONID");
-
-		return true;
-	}
-
-	private void clearCookie(HttpServletRequest request, HttpServletResponse response, String cookieName) {
-		Cookie cookie = new Cookie(cookieName, null);
-		String cookiePath = request.getContextPath();
-		if (!StringUtils.hasLength(cookiePath)) {
-			cookiePath = "/";
-		}
-		cookie.setPath(cookiePath);
-		cookie.setMaxAge(0);
-		response.addCookie(cookie);
-	}
+	cookie.setPath(cookiePath);
+	cookie.setMaxAge(0);
+	response.addCookie(cookie);
+    }
 
 }

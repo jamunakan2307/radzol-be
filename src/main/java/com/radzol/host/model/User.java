@@ -24,75 +24,63 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "user")
 public class User extends AbstractMultitenantEntity {
+    
+    @NotBlank
+    @Size(max = 40)
+    @Column(name="username", updatable = false)
+    private String username;
 
-	@NotBlank
-	@Column(name = "email", updatable = false)
-	private String email;
+    @NotBlank
+    @Size(max = 80)
+    @Column(name = "email")
+    private String email;
 
-	@NotBlank
-	@Size(max = 80)
-	private String password;
+    @NotBlank
+    @Size(max = 80)
+    private String password;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "first_name")
-	private String firstName;
+    private boolean verified;
 
-	@NotBlank
-	@Size(max = 100)
-	@Column(name = "last_name")
-	private String lastName;
+    public String getUsername() {
+        return username;
+    }
 
-	private boolean verified;
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	@OneToMany(mappedBy = "user", cascade = { CascadeType.ALL }, orphanRemoval = true, fetch = FetchType.EAGER)
-	Set<UserRole> userRoles = new HashSet<UserRole>();
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.ALL }, orphanRemoval = true, fetch = FetchType.EAGER)
+    Set<UserRole> userRoles = new HashSet<UserRole>();
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getEmail() {
+	return email;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setEmail(String email) {
+	this.email = email;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getPassword() {
+	return password;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setPassword(String password) {
+	this.password = password;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public boolean isVerified() {
+	return verified;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setVerified(boolean verified) {
+	this.verified = verified;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public List<Role> getRoles() {
+	return userRoles.stream().map(r -> r.getRole()).collect(Collectors.toList());
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public boolean isVerified() {
-		return verified;
-	}
-
-	public void setVerified(boolean verified) {
-		this.verified = verified;
-	}
-
-	public List<Role> getRoles() {
-		return userRoles.stream().map(r -> r.getRole()).collect(Collectors.toList());
-	}
-
-	public List<UserRole> getUserRoles() {
-		return userRoles.stream().collect(Collectors.toList());
-	}
+    public List<UserRole> getUserRoles() {
+	return userRoles.stream().collect(Collectors.toList());
+    }
 }

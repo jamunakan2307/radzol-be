@@ -39,15 +39,21 @@
 			<column name="currency" type="varchar(3)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="service_account" type="varchar(100)">
-				<constraints nullable="false"/>
-			</column>
+			<column name="service_account_username" type="varchar(50)" />
+			<column name="service_account_email" type="varchar(50)" />
+			<column name="service_account_password" type="varchar(50)" />
 		</createTable>
 	</changeSet>
 	
 	<changeSet id="20" author="pradeepan">
 		<createIndex indexName="uq_company_uuid" tableName="company" unique="true" tablespace="${indexTablespace}">
 			<column name="uuid"/>
+		</createIndex>
+	</changeSet>
+	
+	<changeSet id="30" author="pradeepan">
+		<createIndex indexName="uq_company_tenantalias" tableName="company" unique="true" tablespace="${indexTablespace}">
+			<column name="tenant_alias"/>
 		</createIndex>
 	</changeSet>
          

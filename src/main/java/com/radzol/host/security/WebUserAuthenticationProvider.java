@@ -17,28 +17,30 @@ import com.radzol.host.web.authentication.LoginDto;
  */
 @Service
 public class WebUserAuthenticationProvider implements AuthenticationProvider {
-	@Autowired
-	private AuthenticationService authenticationService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		if (!supports(authentication.getClass())) {
-			throw new IllegalArgumentException(
-					"Only WebLoginAuthenticationToken is supported, " + authentication.getClass() + " was attempted");
-		}
-
-		LoginDto credentials = (LoginDto) authentication.getCredentials();
-		return authenticationService.authenticate(credentials.getUsername(), credentials.getPassword(),
-				credentials.getTenantAlias());
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+	if (!supports(authentication.getClass())) {
+	    throw new IllegalArgumentException(
+		    "Only WebLoginAuthenticationToken is supported, " + authentication.getClass() + " was attempted");
 	}
 
-	/**
-	 * WebLoginAuthenticationToken is the only supported token.
-	 *
-	 * @param aClass class to check for support
-	 * @return true if class is of type WebLoginAuthenticationToken
-	 */
-	public boolean supports(Class<?> aClass) {
-		return WebUserAuthenticationToken.class.isAssignableFrom(aClass);
-	}
+	LoginDto credentials = (LoginDto) authentication.getCredentials();
+	return authenticationService.authenticate(credentials.getUsername(), credentials.getPassword(),
+		credentials.getTenantAlias());
+    }
+
+    /**
+     * WebLoginAuthenticationToken is the only supported token.
+     *
+     * @param aClass class to check for support
+     * @return true if class is of type WebLoginAuthenticationToken
+     */
+    @Override
+    public boolean supports(Class<?> aClass) {
+	return WebUserAuthenticationToken.class.isAssignableFrom(aClass);
+    }
 
 }
