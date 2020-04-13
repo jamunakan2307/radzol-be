@@ -30,4 +30,9 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Company> findAll() {
 	return companyRepository.findAll();
     }
+
+    @Override
+    public Company findByTenantAlias(String tenantAlias) {
+	return companyRepository.findByTenantAlias(tenantAlias);
+    }
 }

@@ -13,7 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.radzol.host.model.Company;
 import com.radzol.host.model.User;
+import com.radzol.host.service.CompanyService;
 import com.radzol.host.service.UserService;
 
 /**
@@ -24,18 +26,23 @@ import com.radzol.host.service.UserService;
 public class AuthenticationService {
 
     private final UserService userService;
+    
+    private final CompanyService companyService;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public AuthenticationService(UserService userService) {
+    public AuthenticationService(UserService userService, CompanyService companyService) {
 	this.userService = userService;
+	this.companyService = companyService;
     }
 
     public UserAuthentication authenticate(String username, String password, String tenantAlias) {
 
-	// TODO: find the tenant using companyService for now just get the user name
-
+	Company company = companyService.findByTenantAlias(tenantAlias);
+	if (company == null) {
+	    throw new BadCredentialsException("login.error.invalidCredentials");
+	}
 	// NOTE: we reveal as little as possible to hackers by not indicating which
 	// argument is invalid
 	User user = userService.findByUsername(username);

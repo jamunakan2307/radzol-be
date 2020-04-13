@@ -13,4 +13,5 @@ import com.radzol.host.model.Company;
  */
 public interface CompanyService {
     List<Company> findAll();
+    Company findByTenantAlias(String tenantAlias);
 }
