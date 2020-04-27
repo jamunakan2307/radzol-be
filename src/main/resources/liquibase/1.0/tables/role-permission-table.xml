@@ -1,0 +1,73 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+         
+	<changeSet id="10" author="pradeepan">
+		<createTable tableName="role_permission" tablespace="${dataTablespace}">
+			<column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyTablespace="${indexTablespace}"/>
+            </column>
+            <column name="version" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)" defaultValue="${systemUser}">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="created_timestamp" type="datetime" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)" defaultValue="${systemUser}">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="modified_timestamp" type="datetime" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uuid" type="${uuid_type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="bigint">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="permission" type="varchar(40)" >
+                <constraints nullable="false"/>
+            </column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="20" author="pradeepan">
+		<createIndex indexName="uq_rolepermission_uuid" tableName="role_permission" unique="true" tablespace="${indexTablespace}">
+			<column name="uuid"/>
+		</createIndex>
+	</changeSet>
+	
+	<changeSet id="30" author="pradeepan">
+		<createIndex indexName="uq_rolepermission_role_permission" tableName="role_permission" unique="true" tablespace="${indexTablespace}">
+			<column name="role_id"/>
+			<column name="permission"/>
+		</createIndex>
+	</changeSet>
+	
+	<changeSet id="40" author="pradeepan">
+		<addForeignKeyConstraint constraintName="fk_rolepermission_company"
+			baseTableName="role_permission"
+			baseColumnNames="company_id"
+			referencedTableName="company"
+			referencedColumnNames="id"
+			onDelete="CASCADE"/>
+	</changeSet>
+	
+	<changeSet id="50" author="pradeepan">
+		<addForeignKeyConstraint constraintName="fk_rolepermission_role"
+			baseTableName="role_permission"
+			baseColumnNames="role_id"
+			referencedTableName="role"
+			referencedColumnNames="id"
+			onDelete="CASCADE"/>
+	</changeSet>
+         
+</databaseChangeLog>

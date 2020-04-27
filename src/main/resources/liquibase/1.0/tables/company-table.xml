@@ -1,0 +1,60 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+         
+	<changeSet id="10" author="pradeepan">
+		<createTable tableName="company" tablespace="${dataTablespace}">
+			<column name="id" type="bigint" autoIncrement="true" startWith="10000">
+                <constraints primaryKey="true" nullable="false" primaryKeyTablespace="${indexTablespace}"/>
+            </column>
+            <column name="version" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)" defaultValue="${systemUser}">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="created_timestamp" type="datetime" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="varchar(50)" defaultValue="${systemUser}">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="modified_timestamp" type="datetime" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uuid" type="${uuid_type}">
+                <constraints nullable="false"/>
+            </column>
+			<column name="name" type="varchar(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="tenant_alias" type="varchar(20)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="time_zone" type="varchar(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="currency" type="varchar(3)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="service_account_username" type="varchar(50)" />
+			<column name="service_account_email" type="varchar(50)" />
+			<column name="service_account_password" type="varchar(50)" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="20" author="pradeepan">
+		<createIndex indexName="uq_company_uuid" tableName="company" unique="true" tablespace="${indexTablespace}">
+			<column name="uuid"/>
+		</createIndex>
+	</changeSet>
+	
+	<changeSet id="30" author="pradeepan">
+		<createIndex indexName="uq_company_tenantalias" tableName="company" unique="true" tablespace="${indexTablespace}">
+			<column name="tenant_alias"/>
+		</createIndex>
+	</changeSet>
+         
+</databaseChangeLog>
